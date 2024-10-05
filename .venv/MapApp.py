@@ -89,12 +89,15 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(pygame.mouse.get_pos())
         x, y = pygame.mouse.get_pos()
         screen.fill("white")
         bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
         screen.blit(bg, (0, 0))
         if 0 <= x <= 1500 and 0 <= y <= 750:
             display_cursor(screen, x, y)
+        draw_buttons(screen)
         pygame.display.update()
 
 
@@ -104,6 +107,13 @@ def display_cursor(screen, x, y):
     text_surf = my_font.render(str(lon) + ", " + str(lat), False, (0, 0, 255))
     screen.blit(text_surf, (1400, 775))
 
+def draw_buttons(surface):
+    pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(760, 760, 100, 50), 3)
+    pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(880, 760, 100, 50), 3)
+    pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(1000, 760, 100, 50), 3)
+    pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(1120, 760, 100, 50), 3)
+    pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(1240, 760, 100, 50), 3)
+    pygame.draw.rect(surface, (0, 0, 0), pygame.Rect(760, 820, 580, 100), 3)
 
 # function for damage index implementation and generation of data for size on fig
 def damage_index():
