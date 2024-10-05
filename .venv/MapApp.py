@@ -25,16 +25,17 @@ with open(store_path, 'w', newline='') as f:
 df_data = pd.read_csv(open(data_path, 'r', newline=''))
 df_store = pd.read_csv(open(store_path, 'r', newline=''))
 
-city_names = df_data.loc[:, 'Title'].tolist()
-city_x = df_data.loc[:, 'Lon'].tolist()
-city_y = df_data.loc[:, 'Lat'].toList()
+city_names = df_data.loc[:, 'Title'].to_list()
+city_x = df_data.loc[:, 'Lon'].to_list()
+city_y = df_data.loc[:, 'Lat'].to_list()
 coordinate_pairs = {}
 for i in range(len(city_names)):
     coordinate_pairs[city_names[i]] = (float(city_x[i]), float(city_y[i]))
 
-fig = px.scatter_geo(df_store, lat = "Lat", lon = "Lon", hover_name = "Title", size = "2021 pop.")
+fig = px.scatter_geo()
 
 def place_pirate(selection, x, y):
+    consequences = []
     size = pirate.bubble(selection)[0]
     while size <= size[1]:
         old_size = size
@@ -73,11 +74,13 @@ def place_pirate(selection, x, y):
             elif ((x - old_size) < coord[0] < (x - old_size)) and ((y - old_size) < coord[1] < (y - old_size)):
                 pillaged.append([coord[1], coord[0], city]) # - - - -
         with open(store_path, 'w', newline='') as f:
+            writer = csv.writer(f)
             for city in pillaged:
-                writer = csv.writer(f)
+                consequences.append(pirate.pillage(selection, city))
                 writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
-        fig = px.scatter_geo(df_store, lat = x, lon = y, hover_name = "Title", size = size)
+        fig = px.scatter_geo()
         fig.show()
+    return consequences
 
 def main():
     screen = pygame.display.set_mode((1280, 720))
