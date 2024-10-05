@@ -56,11 +56,5 @@ def damage_index():
     return index
 
 
-# implementation below is for dash integration
-# app = dash.Dash()
-# app.layout = html.Div([
-#     dcc.Graph(figure = fig)
-# ])
-
 if __name__ == "__main__":
     main()
