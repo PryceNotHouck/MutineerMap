@@ -7,6 +7,10 @@ from pirates import pirate
 import plotly.express as px
 import pygame
 
+pygame.init()
+pygame.font.init()
+my_font = pygame.font.SysFont('Comic Sans MS', 15)
+
 data_path = os.path.realpath('data/largestcities.csv')
 store_path = os.path.realpath('data/storecities.csv')
 
@@ -31,10 +35,19 @@ def main():
                 running= False
         fig.write_image("static/images/fig1.jpeg")
         image = pygame.image.load('static/images/fig1.jpeg')
+        x, y = pygame.mouse.get_pos()
         screen.blit(image, (0, 0))
+        if 80 <= x <= 620 and 105 <= y <= 375:
+            display_cursor(screen, x, y)
         pygame.display.update()
 
 
+def display_cursor(screen, x, y):
+
+    lat = round((y/(270/180) - 90)/-1, 2)
+    lon = round(x/(540/360)-180, 2)
+    text_surf = my_font.render(str(lon) + ", " + str(lat), False, (0, 0, 255))
+    screen.blit(text_surf, (x-60, y-50))
 
 
 # function for damage index implementation and generation of data for size on fig
