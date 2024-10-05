@@ -5,6 +5,7 @@ import csv
 from dash import html
 from pirates import pirate
 import plotly.express as px
+import pygame
 
 data_path = os.path.realpath('data/largestcities.csv')
 store_path = os.path.realpath('data/storecities.csv')
@@ -21,7 +22,20 @@ pirate = pirate()
 fig = px.scatter_geo(df_store, lat = "Lat", lon = "Lon", hover_name = "Title", size = "2021 pop.")
 
 def main():
-    fig.show()
+    screen = pygame.display.set_mode((1280, 720))
+    pygame.display.flip()
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running= False
+        fig.write_image("static/images/fig1.jpeg")
+        image = pygame.image.load('static/images/fig1.jpeg')
+        screen.blit(image, (0, 0))
+        pygame.display.update()
+
+
+
 
 # function for damage index implementation and generation of data for size on fig
 def damage_index():
