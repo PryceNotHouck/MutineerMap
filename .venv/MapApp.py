@@ -83,7 +83,8 @@ def place_pirate(selection, x, y):
     return consequences
 
 def main():
-    screen = pygame.display.set_mode((1280, 720))
+    screen = pygame.display.set_mode((1820, 980))
+    screen.fill("white")
     pygame.display.flip()
     running = True
     while running:
@@ -100,9 +101,8 @@ def main():
 
 
 def display_cursor(screen, x, y):
-
-    lat = round((y/(270/180) - 90)/-1, 2)
-    lon = round(x/(540/360)-180, 2)
+    lat = round(((y-105)/(270/180) - 90)/-1, 2)
+    lon = round((x-80)/(540/360)-180, 2)
     text_surf = my_font.render(str(lon) + ", " + str(lat), False, (0, 0, 255))
     screen.blit(text_surf, (x-60, y-50))
 
