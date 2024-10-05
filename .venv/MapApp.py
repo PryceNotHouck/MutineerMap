@@ -3,10 +3,12 @@ import os
 import pandas as pd
 
 from dash import html
+#from pirates import pirate
 
 import plotly.express as px
-df = pd.read_csv(os.path.join("data", "largestcities.csv"))
-
+cities_path = os.path.dirname(os.path.abspath('largestcities.csv'))
+df = pd.read_csv(open(cities_path, 'r', newline=''))
+#pirate = pirate()
 fig = px.scatter_geo(df, lat = "Lat", lon = "Lon", hover_name = "Country", size = "2021 pop.")
 
 def main():

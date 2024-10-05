@@ -1,6 +1,8 @@
+import os
 import csv
 
 class pirate():
+    cities_path = os.path.dirname(os.path.realpath('largestcities.csv'))
     captains = ['Black Sam Bellamy', 'Henry Every', 'William Kidd', 'Edward Teach', 'Henry Morgan']
     ships =    [70, 25, 1, 18, 36]
     range = [3775, 5522, 2183, 1761, 1128]
@@ -17,7 +19,7 @@ class pirate():
     def city_density(self, city):
         average_pop = 0
         var_pop = -1
-        reader = csv.reader(open('.venv/data/largestcities.csv', 'r', newline=''))
+        reader = csv.reader(open(self.cities_path, 'r', newline=''))
         next(reader)
         for row in reader:
             if row[2] in city:
@@ -33,7 +35,7 @@ class pirate():
 
     def pillage(self, selection, city):
         population = -1
-        reader = csv.reader(open('.venv/data/largestcities.csv', 'r', newline=''))
+        reader = csv.reader(open(self.cities_path, 'r', newline=''))
         next(reader)
         for row in reader:
             if row[2] in city:
