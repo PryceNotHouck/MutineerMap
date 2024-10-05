@@ -15,7 +15,8 @@ def main():
 
 # function for damage index implementation and generation of data for size on fig
 def damage_index():
-
+    index = 0
+    return index
 
 
 # implementation below is for dash integration

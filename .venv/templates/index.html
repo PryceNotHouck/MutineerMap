@@ -3,12 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Mutineer Map</title>
+  <style>
+    .center{
+      display:block;
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .buttonformat{
+      margin-left:auto;
+      margin-right:auto;
+      text-align:center;
+    }
+  </style>
 </head>
 <body>
-  <form method = "POST">
-    <label for = "country"> Zoom to country: </label>
-    <input type = "text" name = "country" id = "country">
-    <button type = "submit"> Submit </button>
-  </form>
+  <h1>
+    <a href="https://cooltext.com"><img src="https://images.cooltext.com/5711128.gif" width="1500" height="104" alt="Mutineer Map" class = "center"/></a>
+  </h1>
+  <div class="buttonformat">
+    <form method  = "POST">
+      <label for = "country" > Zoom to country: </label>
+      <input type = "text" name = "country" id = "country">
+      <button type = "submit" > Submit </button>
+    </form>
+  </div>
+
 </body>
 </html>

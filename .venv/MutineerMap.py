@@ -3,7 +3,12 @@ import plotly as pl
 
 app = Flask(__name__, template_folder='templates')
 
-@app.route('/', methods = ['GET', 'POST'])
+@app.route('/')
+def main():
+    return render_template('homepage.html')
+
+
+@app.route('/index', methods = ['GET', 'POST'])
 def index():
     if request.method == 'POST':
         country = request.form[
