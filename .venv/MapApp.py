@@ -83,14 +83,14 @@ def place_pirate(selection, x, y):
     return consequences
 
 def main():
-    screen = pygame.display.set_mode((1820, 980))
+    screen = pygame.display.set_mode((1520, 780))
     screen.fill("white")
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
-        fig.write_image("static/images/fig1.jpeg")
+        fig.write_image("static/images/fig1.jpeg", engine='kaleido')
         image = pygame.image.load('static/images/fig1.jpeg')
         x, y = pygame.mouse.get_pos()
         screen.blit(image, (0, 0))
