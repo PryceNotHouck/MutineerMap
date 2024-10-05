@@ -15,18 +15,82 @@
       margin-right:auto;
       text-align:center;
     }
+
+    .header2{
+      margin-left:auto;
+      margin-right:auto;
+      text-align:center;
+    }
+
+    .select{
+      display:flex;
+      margin-left:auto;
+      margin-right:auto;
+      text-align:center
+    }
+
+    .button{
+      position:relative;
+      padding:0.5em 1em;
+      border:0;
+      border-radius:0.5em;
+      background-color:orange;
+      box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
+      cursor:pointer;
+    }
+
+    .button:active, .active{
+      top:2px;
+      left:1px;
+      box-shadow:none;
+    }
   </style>
 </head>
-<body>
+
+
+<body onload = "onload()">
+  <script>
+    onload = function(){
+      var e = document.getElementById("countryselect")
+      e.style.display = 'none'
+    }
+  </script>
+
   <h1>
     <a href="https://cooltext.com"><img src="https://images.cooltext.com/5711128.gif" width="1500" height="104" alt="Mutineer Map" class = "center"/></a>
   </h1>
-  <div class="buttonformat">
-    <form method  = "POST">
-      <label for = "country" > Zoom to country: </label>
-      <input type = "text" name = "country" id = "country">
-      <button type = "submit" > Submit </button>
-    </form>
+
+  <div>
+    <h2 class="header2">
+      Select a Pirate Captain!
+    </h2>
+
+    <div class="select">
+      <button id="blacksambellamy" onclick = "onclick()" class="button">Black Sam Bellamy</button>
+      <button id="henryevery" onclick = "onclick()" class="button">Henry Every</button>
+      <script type = "text/javascript">
+        const button = document.querySelector('.button')
+        button.addEventListener('click', () => {
+          button.classList.toggle('active');
+          var e = document.getElementById("countryselect")
+          var f = document.getElementById("henryevery")
+          if (f.classList.contains("active"))
+            e.style.display = 'block'
+          else
+            e.style.display = 'none'
+        })
+      </script>
+    </div>
+
+    <div class="buttonformat" id="countryselect">
+      <form method  = "POST">
+        <label for = "country" > Select country: </label>
+        <input type = "text" name = "country" id = "country">
+        <button type = "submit" > Submit </button>
+      </form>
+    </div>
+
+
   </div>
 
 </body>

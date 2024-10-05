@@ -8,17 +8,10 @@ def main():
     return render_template('homepage.html')
 
 
-@app.route('/index', methods = ['GET', 'POST'])
-def index():
-    if request.method == 'POST':
-        country = request.form[
-            'country'
-        ]
-        if (checkCountry(country)):
-            return f'Country selected : {country}'
-        else:
-            return f'Invalid country selection: {country}'
+@app.route('/select', methods = ['GET', 'POST'])
+def select():
     return render_template('index.html')
+
 
 def checkCountry(country):
 

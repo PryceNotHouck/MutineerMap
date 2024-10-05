@@ -2,7 +2,6 @@ import dash
 import os
 import pandas as pd
 
-from dash import dcc
 from dash import html
 
 import plotly.express as px
@@ -24,3 +23,6 @@ def damage_index():
 # app.layout = html.Div([
 #     dcc.Graph(figure = fig)
 # ])
+
+if __name__ == "__main__":
+    main()
