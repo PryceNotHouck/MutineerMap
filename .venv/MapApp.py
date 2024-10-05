@@ -104,17 +104,41 @@ def main():
         screen.fill("white")
         screen.blit(bg, (0, 0))
         screen.blit(logo, (50, 800))
+        draw_boxes(screen)
         screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
         if 0 <= x <= 1500 and 0 <= y <= 750:
             display_cursor(screen, x, y)
         pygame.display.update()
 
 
+def draw_boxes(surface):
+    sam = pygame.image.load("static/images/black_sam_text.gif")
+    edward = pygame.image.load("static/images/edward_teach_text.gif")
+    morgan = pygame.image.load("static/images/henry_morgan_text.gif")
+    every = pygame.image.load("static/images/henry_every_text.gif")
+    kidd = pygame.image.load("static/images/william_kidd_text.gif")
+
+    pygame.draw.rect(surface, (0, 0, 0), (760, 760, 100, 50), 3)
+    surface.blit(pygame.transform.scale(sam, (100, 50)), (760, 760))
+
+    pygame.draw.rect(surface, (0, 0, 0), (880, 760, 100, 50), 3)
+    surface.blit(pygame.transform.scale(edward, (100, 50)), (880, 760))
+
+    pygame.draw.rect(surface, (0, 0, 0), (1000, 760, 100, 50), 3)
+    surface.blit(pygame.transform.scale(morgan, (100, 50)), (1000, 760))
+
+    pygame.draw.rect(surface, (0, 0, 0), (1120, 760, 100, 50), 3)
+    surface.blit(pygame.transform.scale(every, (100, 50)), (1120, 760))
+
+    pygame.draw.rect(surface, (0, 0, 0), (1240, 760, 100, 50), 3)
+    surface.blit(pygame.transform.scale(kidd, (100, 50)), (1240, 760))
+
+
 def display_cursor(screen, x, y):
     lat = round((y / (750 / 180) - 90) / -1, 2)
     lon = round(x / (1500 / 360) - 180, 2)
     text_surf = my_font.render("Cursor coords: " + str(lon) + ", " + str(lat), False, (0, 0, 255))
-    screen.blit(text_surf, (1275, 775))
+    screen.blit(text_surf, (1275, 875))
 
 
 # function for damage index implementation and generation of data for size on fig
