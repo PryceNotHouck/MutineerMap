@@ -1,3 +1,4 @@
+
 import dash
 import os
 import pandas as pd
@@ -10,6 +11,7 @@ import pygame
 pygame.init()
 pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 15)
+pygame.mouse.set_visible(False)
 
 data_path = os.path.realpath('data/largestcities.csv')
 store_path = os.path.realpath('data/storecities.csv')
@@ -84,25 +86,35 @@ def place_pirate(selection, x, y):
 
 def main():
     screen = pygame.display.set_mode((1500, 1000))
+    bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
+    logo = pygame.image.load("static/images/img.png")
+    cursor = pygame.image.load("static/images/skull.png")
+    cursor2 = pygame.image.load("static/images/skull2.png")
+    curs = cursor
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                curs = cursor2
+            else:
+                curs = cursor
         x, y = pygame.mouse.get_pos()
         screen.fill("white")
-        bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
         screen.blit(bg, (0, 0))
+        screen.blit(logo, (50, 800))
+        screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
         if 0 <= x <= 1500 and 0 <= y <= 750:
             display_cursor(screen, x, y)
         pygame.display.update()
 
 
 def display_cursor(screen, x, y):
-    lat = round(((y)/(750/180) - 90)/-1, 2)
-    lon = round((x)/(1500/360)-180, 2)
-    text_surf = my_font.render(str(lon) + ", " + str(lat), False, (0, 0, 255))
-    screen.blit(text_surf, (1400, 775))
+    lat = round((y / (750 / 180) - 90) / -1, 2)
+    lon = round(x / (1500 / 360) - 180, 2)
+    text_surf = my_font.render("Cursor coords: " + str(lon) + ", " + str(lat), False, (0, 0, 255))
+    screen.blit(text_surf, (1275, 775))
 
 
 # function for damage index implementation and generation of data for size on fig
