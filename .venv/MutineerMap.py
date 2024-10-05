@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-import os
+import plotly as pl
 
 app = Flask(__name__, template_folder='templates')
 
@@ -158,6 +158,7 @@ def checkCountry(country):
             break
 
     return found
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
