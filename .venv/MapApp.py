@@ -85,7 +85,6 @@ def place_pirate(selection, x, y):
 def main():
     screen = pygame.display.set_mode((1820, 980))
     screen.fill("white")
-    pygame.display.flip()
     running = True
     while running:
         for event in pygame.event.get():
