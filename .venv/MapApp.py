@@ -6,7 +6,8 @@ from dash import html
 #from pirates import pirate
 
 import plotly.express as px
-cities_path = os.path.dirname(os.path.abspath('largestcities.csv'))
+cities_path = os.path.realpath('data/largestcities.csv')
+print(cities_path)
 df = pd.read_csv(open(cities_path, 'r', newline=''))
 #pirate = pirate()
 fig = px.scatter_geo(df, lat = "Lat", lon = "Lon", hover_name = "Country", size = "2021 pop.")
