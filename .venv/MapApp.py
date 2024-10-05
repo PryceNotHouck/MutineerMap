@@ -83,27 +83,26 @@ def place_pirate(selection, x, y):
     return consequences
 
 def main():
-    screen = pygame.display.set_mode((1520, 780))
-    screen.fill("white")
+    screen = pygame.display.set_mode((1500, 1000))
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
-        fig.write_image("static/images/fig1.jpeg", engine='kaleido')
-        image = pygame.image.load('static/images/fig1.jpeg')
         x, y = pygame.mouse.get_pos()
-        screen.blit(image, (0, 0))
-        if 80 <= x <= 620 and 105 <= y <= 375:
+        screen.fill("white")
+        bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
+        screen.blit(bg, (0, 0))
+        if 0 <= x <= 1500 and 0 <= y <= 750:
             display_cursor(screen, x, y)
         pygame.display.update()
 
 
 def display_cursor(screen, x, y):
-    lat = round(((y-105)/(270/180) - 90)/-1, 2)
-    lon = round((x-80)/(540/360)-180, 2)
+    lat = round(((y)/(750/180) - 90)/-1, 2)
+    lon = round((x)/(1500/360)-180, 2)
     text_surf = my_font.render(str(lon) + ", " + str(lat), False, (0, 0, 255))
-    screen.blit(text_surf, (x-60, y-50))
+    screen.blit(text_surf, (1400, 775))
 
 
 # function for damage index implementation and generation of data for size on fig
