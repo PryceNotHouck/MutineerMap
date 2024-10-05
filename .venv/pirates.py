@@ -21,6 +21,7 @@ class pirate():
         var_pop = -1
         reader = csv.reader(open(self.cities_path, 'r', newline=''))
         next(reader)
+        next(reader)
         for row in reader:
             if row[2] in city:
                 var_pop = int(row[5])
@@ -37,6 +38,7 @@ class pirate():
         population = -1
         reader = csv.reader(open(self.cities_path, 'r', newline=''))
         next(reader)
+        next(reader)
         for row in reader:
             if row[2] in city:
                 population = int(row[5])
@@ -49,7 +51,3 @@ class pirate():
             kills = population
         plunder = self.plunder_per_ship * self.ships[selection] * density * self.power_scale[selection]
         return [damage, kills, plunder]
-
-
-
-pirate.pillage(0, 0, 'China')

@@ -1,15 +1,24 @@
 import dash
 import os
 import pandas as pd
-
+import csv
 from dash import html
-#from pirates import pirate
-
+from pirates import pirate
 import plotly.express as px
-cities_path = os.path.realpath('data/largestcities.csv')
-df = pd.read_csv(open(cities_path, 'r', newline=''))
-#pirate = pirate()
-fig = px.scatter_geo(df, lat = "Lat", lon = "Lon", hover_name = "Country", size = "2021 pop.")
+
+data_path = os.path.realpath('data/largestcities.csv')
+store_path = os.path.realpath('data/storecities.csv')
+
+if os.path.isfile(store_path):
+    os.remove(store_path)
+with open(store_path, 'w', newline='') as f:
+    dw = csv.DictWriter(f, fieldnames=['Lat', 'Lon', 'Title', 'rank', 'Country', '2021 pop.'])
+    dw.writeheader()
+    dw.writerow({'Lat':'0.00', 'Lon':'0.00', 'Title':'Start', 'rank':'0', 'Country':'None', '2021 pop.':'0'})
+df_data = pd.read_csv(open(data_path, 'r', newline=''))
+df_store = pd.read_csv(open(store_path, 'r', newline=''))
+pirate = pirate()
+fig = px.scatter_geo(df_store, lat = "Lat", lon = "Lon", hover_name = "Title", size = "2021 pop.")
 
 def main():
     fig.show()
