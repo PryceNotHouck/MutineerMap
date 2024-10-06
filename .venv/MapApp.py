@@ -11,6 +11,7 @@ pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 25)
 pygame.mouse.set_visible(False)
 
+
 circleArr = []
 
 data_path = os.path.realpath('data/largestcities.csv')
@@ -98,10 +99,11 @@ def place_pirate(selection, x, y, size, screen, font):
             for city in pillaged:
                 consequences.append(pirate.pillage(selection, city))
                 writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
-        draw_consequences(screen, font, consequences)
+        #draw_consequences(screen, font, consequences)
     return consequences
 
 def main():
+    totSize = 0
     screen = pygame.display.set_mode((1500, 1000))
     pygame.display.set_caption("Mutineer Map v0.1.0")
     font = pygame.font.Font('static/fonts/booter/BOOTERZF.ttf', 24)
@@ -128,7 +130,7 @@ def main():
                                     " -> Power: " + str(pirate.power_scale[selected]) +
                                     " -> Actions: " + str(pirate.actions[selected]) +
                                     " -> Speed: " + str(pirate.speed[selected]), False, (0, 0, 0))
-        screen.blit(infocanvas, (600, 850))
+        screen.blit(infocanvas, (800, 850))
         screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
         if 0 <= x <= 1500 and 0 <= y <= 750:
             display_cursor(screen, x, y)
@@ -170,29 +172,30 @@ def main():
             pygame.draw.circle(screen, circle.color, (circle.x, circle.y), int(circle.size) / 50)
             if circle.size <= pirate.range[selected]:
                 circle.size += (1/10) * pirate.speed[selected] * pirate.movement_constant * pirate.actions[selected]
+                totSize += circle.size
 
-        draw_consequences(screen, my_font, consequences)
+        draw_consequences(screen, my_font, consequences, totSize)
         pygame.display.update()
 
-def draw_consequences(surface, font, consequences):
+def draw_consequences(surface, font, consequences, totSize):
     killed, damages, plundered = 0, 0, 0
     for city in consequences:
         damages += float(city[0])
         killed += int(city[1])
         plundered += int(city[2])
 
-    kill_text = font.render(str(killed), False, pygame.Color('black'))
-    damages_text = font.render(f'${damages}', False, pygame.Color('black'))
-    plunder_text = font.render(f'${plundered}', False, pygame.Color('black'))
+    kill_text = font.render("Kills: " + str(round(10 * totSize, 2)), False, pygame.Color('black'))
+    damages_text = font.render("Damages: $" + str(round(72000 * 1.2 * totSize, 2)), False, pygame.Color('black'))
+    plunder_text = font.render("Plunder: $" + str(round(20000000 * totSize, 2)), False, pygame.Color('black'))
 
     # killRect, damageRect, plunderRect = kill_text.get_rect(), damages_text.get_rect(), plunder_text.get_rect()
     # killRect.center = (int(killRect.width / 2), int(killRect.height / 2))
     # damageRect.center = (int(damageRect.width / 2), int(damageRect.height / 2))
     # plunderRect.center = (int(plunderRect.width / 2), int(plunderRect.height / 2))
 
-    surface.blit(kill_text, (520, 760))
-    surface.blit(damages_text, (520, 810))
-    surface.blit(plunder_text, (520, 860))
+    surface.blit(kill_text, (520, 810))
+    surface.blit(damages_text, (520, 860))
+    surface.blit(plunder_text, (520, 910))
 
 def draw_boxes(surface):
     sam = pygame.image.load("static/images/black_sam_text.gif")
