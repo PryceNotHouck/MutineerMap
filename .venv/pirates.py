@@ -1,7 +1,7 @@
 import os
 import csv
 
-class pirate():
+class pirate:
     cities_path = os.path.realpath('data/largestcities.csv')
     captains = ['Black Sam Bellamy', 'Henry Every', 'William Kidd', 'Edward Teach', 'Henry Morgan']
     ships =    [70, 25, 1, 18, 36]
