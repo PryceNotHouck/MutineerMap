@@ -10,7 +10,7 @@ import pygame
 
 pygame.init()
 pygame.font.init()
-my_font = pygame.font.SysFont('Comic Sans MS', 15)
+my_font = pygame.font.SysFont('Comic Sans MS', 25)
 pygame.mouse.set_visible(False)
 
 data_path = os.path.realpath('data/largestcities.csv')
@@ -47,33 +47,34 @@ def main():
     running = True
     selected = -1
     while running:
+        name = ""
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 curs = cursor2
+                infocanvas = my_font.render("", False, "green")
                 print(pygame.mouse.get_pos())
                 if 760 <= pygame.mouse.get_pos()[0] <= 860 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # sam
                     selected = 0
-                    infocanvas = my_font.render("\" Black Sam \" Bellamy: \n Ships: " + pirate.ships[selected] +
-                                                                         "\n Range: " + pirate.range[selected] +
-                                                                         "\n Power: " + pirate.power_scale[selected] +
-                                                                         "\n Actions: " + pirate.actions[selected] +
-                                                                         "\n Speed: " + pirate.speed[selected], False, "green")
-                    screen.blit()
+                    name = "\"Black Sam\" Bellamy"
                 elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # edward
                     selected = 3
+                    name = "Edward Teach"
                 elif 1000 <= pygame.mouse.get_pos()[0] <= 1100 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # morgan
                     selected = 4
+                    name = "Henry Morgan"
                 elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # every
                     selected = 1
-                elif 1240 <= pygame.mouse.get_pos()[0] <= 1300 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                    name = "Henry Every"
+                elif 1120 <= pygame.mouse.get_pos()[0] <= 1220 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # kidd
                     selected = 2
+                    name = "William Kidd"
                 elif pygame.mouse.get_pos()[1] >= 680:
                     if selected != -1:
                         selected = -1
@@ -136,6 +137,7 @@ def main():
                                     for city in pillaged:
                                         consequences.append(pirate.pillage(selection, city))
                                         writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
+                                draw_consequences(screen, font, consequences)
                             return consequences
             else:
                 curs = cursor
@@ -144,21 +146,36 @@ def main():
         screen.blit(bg, (0, 0))
         screen.blit(logo, (50, 800))
         draw_boxes(screen)
+        infocanvas = my_font.render(name +  " -> Ships:" + str(pirate.ships[selected]) +
+                                    " -> Range: " + str(pirate.range[selected]) +
+                                    " -> Power: " + str(pirate.power_scale[selected]) +
+                                    " -> Actions: " + str(pirate.actions[selected]) +
+                                    " -> Speed: " + str(pirate.speed[selected]), False, (0, 255, 0))
+        screen.blit(infocanvas, (600, 850))
         screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
         if 0 <= x <= 1500 and 0 <= y <= 750:
             display_cursor(screen, x, y)
         pygame.display.update()
 
-def draw_consequences(surface, consequences):
+def draw_consequences(surface, font, consequences):
     killed, damages, plundered = 0, 0, 0
     for city in consequences:
         damages += float(city[0])
         killed += int(city[1])
         plundered += int(city[2])
 
-    s_killed = str(killed)
-    s_damages = f'${damages}'
-    s_plundered = f'${plundered}'
+    kill_text = font.render(str(killed), False, pygame.Color('black'))
+    damages_text = font.render(f'${damages}', False, pygame.Color('black'))
+    plunder_text = font.render(f'${plundered}', False, pygame.Color('black'))
+
+    # killRect, damageRect, plunderRect = kill_text.get_rect(), damages_text.get_rect(), plunder_text.get_rect()
+    # killRect.center = (int(killRect.width / 2), int(killRect.height / 2))
+    # damageRect.center = (int(damageRect.width / 2), int(damageRect.height / 2))
+    # plunderRect.center = (int(plunderRect.width / 2), int(plunderRect.height / 2))
+
+    surface.blit(kill_text, (520, 760))
+    surface.blit(damages_text, (520, 810))
+    surface.blit(plunder_text, (520, 860))
 
 def draw_boxes(surface):
     sam = pygame.image.load("static/images/black_sam_text.gif")
