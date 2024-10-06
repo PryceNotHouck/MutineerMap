@@ -4,6 +4,8 @@ import os
 import pandas as pd
 import csv
 from dash import html
+from networkx.drawing import draw_circular
+
 from pirates import pirate
 import plotly.express as px
 import pygame
@@ -140,6 +142,7 @@ def main():
                                         consequences.append(pirate.pillage(selection, city))
                                         writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
                                 draw_consequences(screen, font, consequences)
+                                pygame.draw.circle(screen, [0, 0 , 0], [x, y], size)
                             return consequences
             else:
                 curs = cursor
@@ -147,12 +150,14 @@ def main():
         screen.fill("white")
         screen.blit(bg, (0, 0))
         screen.blit(logo, (50, 800))
+        if selected == -1:
+            place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
         draw_boxes(screen)
-        infocanvas = my_font.render(name +  " -> Ships:" + str(pirate.ships[selected]) +
+        infocanvas = font.render(name +  " -> Ships:" + str(pirate.ships[selected]) +
                                     " -> Range: " + str(pirate.range[selected]) +
                                     " -> Power: " + str(pirate.power_scale[selected]) +
                                     " -> Actions: " + str(pirate.actions[selected]) +
-                                    " -> Speed: " + str(pirate.speed[selected]), False, (0, 255, 0))
+                                    " -> Speed: " + str(pirate.speed[selected]), False, (0, 0, 0))
         screen.blit(infocanvas, (600, 850))
         screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
         if 0 <= x <= 1500 and 0 <= y <= 750:
