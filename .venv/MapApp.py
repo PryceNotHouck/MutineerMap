@@ -69,7 +69,7 @@ def main():
                 elif 1000 <= pygame.mouse.get_pos()[0] <= 1100 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # morgan
                     selected = 4
-                elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                elif 1120 <= pygame.mouse.get_pos()[0] <= 1220 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # every
                     selected = 1
                 elif 1240 <= pygame.mouse.get_pos()[0] <= 1300 and 760 <= pygame.mouse.get_pos()[1] <= 810:
@@ -79,7 +79,6 @@ def main():
                     if selected != -1:
                         selected = -1
                         def place_pirate(selection, x, y):
-                            opacity = 150
                             consequences = []
                             size = pirate.bubble(selection)[0]
                             while size <= pirate.bubble(selection)[1]:
@@ -139,7 +138,9 @@ def main():
                                         consequences.append(pirate.pillage(selection, city))
                                         writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
                                 draw_consequences(screen, font, consequences)
+                                pygame.draw.circle(screen, "black", [x, y], size)
                             return consequences
+                        place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
             else:
                 curs = cursor
         x, y = pygame.mouse.get_pos()
