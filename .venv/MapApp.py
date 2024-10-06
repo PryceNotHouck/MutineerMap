@@ -168,7 +168,8 @@ def main():
 
         for circle in circleArr:
             pygame.draw.circle(screen, circle.color, (circle.x, circle.y), int(circle.size) / 50)
-            circle.size += pirate.speed[selected] * pirate.movement_constant * pirate.actions[selected]
+            if (circle.size <= pirate.range[selected]):
+                circle.size += (1/10) * pirate.speed[selected] * pirate.movement_constant * pirate.actions[selected]
 
         draw_consequences(screen, my_font, consequences)
         pygame.display.update()
