@@ -38,6 +38,7 @@ fig = px.scatter_geo()
 
 def main():
     screen = pygame.display.set_mode((1500, 1000))
+    pygame.display.set_caption("Mutineer Map v0.1.0")
     font = pygame.font.Font('static/fonts/booter/BOOTERZF.ttf', 24)
     bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
     logo = pygame.image.load("static/images/img.png")
@@ -79,6 +80,7 @@ def main():
                     if selected != -1:
                         selected = -1
                         def place_pirate(selection, x, y):
+                            opacity = 150
                             consequences = []
                             size = pirate.bubble(selection)[0]
                             while size <= pirate.bubble(selection)[1]:
