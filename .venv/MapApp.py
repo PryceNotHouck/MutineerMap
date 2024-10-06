@@ -38,6 +38,7 @@ fig = px.scatter_geo()
 
 def main():
     screen = pygame.display.set_mode((1500, 1000))
+    pygame.display.set_caption("Mutineer Map v0.1.0")
     font = pygame.font.Font('static/fonts/booter/BOOTERZF.ttf', 24)
     bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
     logo = pygame.image.load("static/images/img.png")
@@ -78,6 +79,7 @@ def main():
                     if selected != -1:
                         selected = -1
                         def place_pirate(selection, x, y):
+                            opacity = 150
                             consequences = []
                             size = pirate.bubble(selection)[0]
                             while size <= pirate.bubble(selection)[1]:
@@ -136,6 +138,7 @@ def main():
                                     for city in pillaged:
                                         consequences.append(pirate.pillage(selection, city))
                                         writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
+                                draw_consequences(screen, font, consequences)
                             return consequences
             else:
                 curs = cursor
@@ -149,16 +152,25 @@ def main():
             display_cursor(screen, x, y)
         pygame.display.update()
 
-def draw_consequences(surface, consequences):
+def draw_consequences(surface, font, consequences):
     killed, damages, plundered = 0, 0, 0
     for city in consequences:
         damages += float(city[0])
         killed += int(city[1])
         plundered += int(city[2])
 
-    s_killed = str(killed)
-    s_damages = f'${damages}'
-    s_plundered = f'${plundered}'
+    kill_text = font.render(str(killed), False, pygame.Color('black'))
+    damages_text = font.render(f'${damages}', False, pygame.Color('black'))
+    plunder_text = font.render(f'${plundered}', False, pygame.Color('black'))
+
+    # killRect, damageRect, plunderRect = kill_text.get_rect(), damages_text.get_rect(), plunder_text.get_rect()
+    # killRect.center = (int(killRect.width / 2), int(killRect.height / 2))
+    # damageRect.center = (int(damageRect.width / 2), int(damageRect.height / 2))
+    # plunderRect.center = (int(plunderRect.width / 2), int(plunderRect.height / 2))
+
+    surface.blit(kill_text, (520, 760))
+    surface.blit(damages_text, (520, 810))
+    surface.blit(plunder_text, (520, 860))
 
 def draw_boxes(surface):
     sam = pygame.image.load("static/images/black_sam_text.gif")
