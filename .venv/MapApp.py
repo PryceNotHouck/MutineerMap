@@ -1,10 +1,6 @@
-
-import dash
 import os
 import pandas as pd
 import csv
-from dash import html
-from networkx.drawing import draw_circular
 from circle import Circle
 from pirates import pirate
 import plotly.express as px
@@ -172,7 +168,7 @@ def main():
 
         for circle in circleArr:
             pygame.draw.circle(screen, circle.color, (circle.x, circle.y), int(circle.size) / 50)
-            circle.size += int(pirate.speed[selected] * pirate.movement_constant[selected] * pirate.actions[selected])
+            circle.size += pirate.speed[selected] * pirate.movement_constant * pirate.actions[selected]
 
         draw_consequences(screen, my_font, consequences)
         pygame.display.update()
