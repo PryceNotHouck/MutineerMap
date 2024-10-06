@@ -51,10 +51,17 @@ def main():
             if event.type == pygame.QUIT:
                 running= False
             if event.type == pygame.MOUSEBUTTONDOWN:
+                curs = cursor2
                 print(pygame.mouse.get_pos())
                 if 760 <= pygame.mouse.get_pos()[0] <= 860 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # sam
                     selected = 0
+                    infocanvas = my_font.render("\" Black Sam \" Bellamy: \n Ships: " + pirate.ships[selected] +
+                                                                         "\n Range: " + pirate.range[selected] +
+                                                                         "\n Power: " + pirate.power_scale[selected] +
+                                                                         "\n Actions: " + pirate.actions[selected] +
+                                                                         "\n Speed: " + pirate.speed[selected], False, "green")
+                    screen.blit()
                 elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # edward
                     selected = 3
@@ -73,7 +80,7 @@ def main():
                         def place_pirate(selection, x, y):
                             consequences = []
                             size = pirate.bubble(selection)[0]
-                            while size <= size[1]:
+                            while size <= pirate.bubble(selection)[1]:
                                 old_size = size
                                 size += pirate.expand_radius(size / 2, selection)
                                 pillaged = []
@@ -129,10 +136,7 @@ def main():
                                     for city in pillaged:
                                         consequences.append(pirate.pillage(selection, city))
                                         writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
-                                fig = px.scatter_geo()
-                                fig.show()
                             return consequences
-                        place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
             else:
                 curs = cursor
         x, y = pygame.mouse.get_pos()
@@ -183,7 +187,7 @@ def display_cursor(screen, x, y):
     lat = round((y / (750 / 180) - 90) / -1, 2)
     lon = round(x / (1500 / 360) - 180, 2)
     text_surf = my_font.render("Cursor coords: " + str(lon) + ", " + str(lat), False, (0, 0, 255))
-    screen.blit(text_surf, (1275, 875))
+    screen.blit(text_surf, (100, 875))
 
 
 # function for damage index implementation and generation of data for size on fig
