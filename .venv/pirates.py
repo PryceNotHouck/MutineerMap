@@ -36,6 +36,8 @@ class pirate():
         expansion = self.movement_constant * self.speed[selection] * self.actions[selection]
         if radius + expansion <= self.range[selection]:
             return radius + expansion
+        else:
+            return self.range[selection]
 
     def pillage(self, selection, city):
         population = -1
