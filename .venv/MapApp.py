@@ -5,7 +5,7 @@ import pandas as pd
 import csv
 from dash import html
 from networkx.drawing import draw_circular
-
+from circle import Circle
 from pirates import pirate
 import plotly.express as px
 import pygame
@@ -14,6 +14,8 @@ pygame.init()
 pygame.font.init()
 my_font = pygame.font.SysFont('Comic Sans MS', 25)
 pygame.mouse.set_visible(False)
+
+circleArr = []
 
 data_path = os.path.realpath('data/largestcities.csv')
 store_path = os.path.realpath('data/storecities.csv')
@@ -92,7 +94,9 @@ def place_pirate(selection, x, y, size, screen, font):
             elif ((x - old_size) < coord[0] < (x - old_size)) and (
                     (y - old_size) < coord[1] < (y - old_size)):
                 pillaged.append([coord[1], coord[0], city])  # - - - -
-        pygame.draw.circle(screen, [0, 0, 0], [x, y], size)
+        # pygame.draw.circle(screen, [0, 0, 0], [x, y], size)
+        if 0 <= x <= 1500 and 0 <= y <= 750:
+            circleArr.append(Circle([0, 0, 0], x, y, size))
         with open(store_path, 'w', newline='') as f:
             writer = csv.writer(f)
             for city in pillaged:
@@ -115,6 +119,23 @@ def main():
     size = 0.00
     while running:
         name = ""
+        x, y = pygame.mouse.get_pos()
+        consequences = []
+        screen.fill("white")
+        screen.blit(bg, (0, 0))
+        screen.blit(logo, (50, 800))
+        if selected == -1:
+            place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], size, screen, font)
+        draw_boxes(screen)
+        infocanvas = font.render(name +  " -> Ships:" + str(pirate.ships[selected]) +
+                                    " -> Range: " + str(pirate.range[selected]) +
+                                    " -> Power: " + str(pirate.power_scale[selected]) +
+                                    " -> Actions: " + str(pirate.actions[selected]) +
+                                    " -> Speed: " + str(pirate.speed[selected]), False, (0, 0, 0))
+        screen.blit(infocanvas, (600, 850))
+        screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
+        if 0 <= x <= 1500 and 0 <= y <= 750:
+            display_cursor(screen, x, y)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
@@ -145,24 +166,15 @@ def main():
                 elif pygame.mouse.get_pos()[1] >= 680:
                     if selected != -1:
                         selected = -1
+                consequences = place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], pirate.power_scale[selected], screen, my_font)
             else:
                 curs = cursor
-        x, y = pygame.mouse.get_pos()
-        screen.fill("white")
-        screen.blit(bg, (0, 0))
-        screen.blit(logo, (50, 800))
-        if selected == -1:
-            place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], size, screen, font)
-        draw_boxes(screen)
-        infocanvas = font.render(name +  " -> Ships:" + str(pirate.ships[selected]) +
-                                    " -> Range: " + str(pirate.range[selected]) +
-                                    " -> Power: " + str(pirate.power_scale[selected]) +
-                                    " -> Actions: " + str(pirate.actions[selected]) +
-                                    " -> Speed: " + str(pirate.speed[selected]), False, (0, 0, 0))
-        screen.blit(infocanvas, (600, 850))
-        screen.blit(pygame.transform.scale(curs, (32, 32)), (x, y))
-        if 0 <= x <= 1500 and 0 <= y <= 750:
-            display_cursor(screen, x, y)
+
+        for circle in circleArr:
+            pygame.draw.circle(screen, circle.color, (circle.x, circle.y), int(circle.size) / 50)
+            circle.size += int(pirate.speed[selected] * pirate.movement_constant[selected] * pirate.actions[selected])
+
+        draw_consequences(screen, my_font, consequences)
         pygame.display.update()
 
 def draw_consequences(surface, font, consequences):
