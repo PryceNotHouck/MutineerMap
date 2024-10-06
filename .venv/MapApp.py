@@ -168,7 +168,7 @@ def main():
 
         for circle in circleArr:
             pygame.draw.circle(screen, circle.color, (circle.x, circle.y), int(circle.size) / 50)
-            if (circle.size <= pirate.range[selected]):
+            if circle.size <= pirate.range[selected]:
                 circle.size += (1/10) * pirate.speed[selected] * pirate.movement_constant * pirate.actions[selected]
 
         draw_consequences(screen, my_font, consequences)
@@ -224,10 +224,10 @@ def display_cursor(screen, x, y):
     screen.blit(text_surf, (100, 875))
 
 
-# function for damage index implementation and generation of data for size on fig
-def damage_index():
-    index = 0
-    return index
+def xy_to_lonlat(x, y):
+    lat = round((y / (750 / 180) - 90) / -1, 2)
+    lon = round(x / (1500 / 360) - 180, 2)
+    return lon, lat
 
 
 if __name__ == "__main__":
