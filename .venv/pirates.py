@@ -17,7 +17,7 @@ class pirate():
     damage_per_ship = 251_752.31
 
     def bubble(self, selection):
-        return [self.range[selection] * 0.1, self.range[selection]]
+        return self.range[selection] * 0.1
 
     def city_density(self, city):
         average_pop = 0
