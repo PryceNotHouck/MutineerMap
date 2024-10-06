@@ -36,68 +36,103 @@ for i in range(len(city_names)):
 
 fig = px.scatter_geo()
 
-def place_pirate(selection, x, y):
-    consequences = []
-    size = pirate.bubble(selection)[0]
-    while size <= size[1]:
-        old_size = size
-        size += pirate.expand_radius(size / 2, selection)
-        pillaged = []
-        for city in coordinate_pairs:
-            coord = coordinate_pairs[city]
-            if ((x + old_size) < coord[0] < (x + old_size)) and ((y + old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + + + +
-            elif ((x + old_size) < coord[0] < (x + old_size)) and ((y + old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + + + -
-            elif ((x + old_size) < coord[0] < (x + old_size)) and ((y - old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + + - +
-            elif ((x + old_size) < coord[0] < (x + old_size)) and ((y - old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + + - -
-            elif ((x + old_size) < coord[0] < (x - old_size)) and ((y + old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + - + +
-            elif ((x + old_size) < coord[0] < (x - old_size)) and ((y + old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + - + -
-            elif ((x + old_size) < coord[0] < (x - old_size)) and ((y - old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + - - +
-            elif ((x + old_size) < coord[0] < (x - old_size)) and ((y - old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # + - - -
-            elif ((x - old_size) < coord[0] < (x + old_size)) and ((y + old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - + + +
-            elif ((x - old_size) < coord[0] < (x + old_size)) and ((y - old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - + - +
-            elif ((x - old_size) < coord[0] < (x + old_size)) and ((y - old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - + - -
-            elif ((x - old_size) < coord[0] < (x - old_size)) and ((y + old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - - + +
-            elif ((x - old_size) < coord[0] < (x - old_size)) and ((y + old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - - + -
-            elif ((x - old_size) < coord[0] < (x - old_size)) and ((y - old_size) < coord[1] < (y + old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - - - +
-            elif ((x - old_size) < coord[0] < (x - old_size)) and ((y - old_size) < coord[1] < (y - old_size)):
-                pillaged.append([coord[1], coord[0], city]) # - - - -
-        with open(store_path, 'w', newline='') as f:
-            writer = csv.writer(f)
-            for city in pillaged:
-                consequences.append(pirate.pillage(selection, city))
-                writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
-        fig = px.scatter_geo()
-        fig.show()
-    return consequences
-
 def main():
     screen = pygame.display.set_mode((1500, 1000))
+    font = pygame.font.Font('static/fonts/booter/BOOTERZF.ttf', 24)
     bg = pygame.transform.scale(pygame.image.load("static/images/world-map-continents-oceans.webp"), (1500, 750))
     logo = pygame.image.load("static/images/img.png")
     cursor = pygame.image.load("static/images/skull.png")
     cursor2 = pygame.image.load("static/images/skull2.png")
     curs = cursor
     running = True
+    selected = -1
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running= False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                curs = cursor2
+                print(pygame.mouse.get_pos())
+                if 760 <= pygame.mouse.get_pos()[0] <= 860 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                    # sam
+                    selected = 0
+                elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                    # edward
+                    selected = 3
+                elif 1000 <= pygame.mouse.get_pos()[0] <= 1100 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                    # morgan
+                    selected = 4
+                elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                    # every
+                    selected = 1
+                elif 1240 <= pygame.mouse.get_pos()[0] <= 1300 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                    # kidd
+                    selected = 2
+                elif pygame.mouse.get_pos()[1] >= 680:
+                    if selected != -1:
+                        selected = -1
+                        def place_pirate(selection, x, y):
+                            consequences = []
+                            size = pirate.bubble(selection)[0]
+                            while size <= size[1]:
+                                old_size = size
+                                size += pirate.expand_radius(size / 2, selection)
+                                pillaged = []
+                                for city in coordinate_pairs:
+                                    coord = coordinate_pairs[city]
+                                    if ((x + old_size) < coord[0] < (x + old_size)) and (
+                                            (y + old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + + + +
+                                    elif ((x + old_size) < coord[0] < (x + old_size)) and (
+                                            (y + old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + + + -
+                                    elif ((x + old_size) < coord[0] < (x + old_size)) and (
+                                            (y - old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + + - +
+                                    elif ((x + old_size) < coord[0] < (x + old_size)) and (
+                                            (y - old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + + - -
+                                    elif ((x + old_size) < coord[0] < (x - old_size)) and (
+                                            (y + old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + - + +
+                                    elif ((x + old_size) < coord[0] < (x - old_size)) and (
+                                            (y + old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + - + -
+                                    elif ((x + old_size) < coord[0] < (x - old_size)) and (
+                                            (y - old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + - - +
+                                    elif ((x + old_size) < coord[0] < (x - old_size)) and (
+                                            (y - old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # + - - -
+                                    elif ((x - old_size) < coord[0] < (x + old_size)) and (
+                                            (y + old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - + + +
+                                    elif ((x - old_size) < coord[0] < (x + old_size)) and (
+                                            (y - old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - + - +
+                                    elif ((x - old_size) < coord[0] < (x + old_size)) and (
+                                            (y - old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - + - -
+                                    elif ((x - old_size) < coord[0] < (x - old_size)) and (
+                                            (y + old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - - + +
+                                    elif ((x - old_size) < coord[0] < (x - old_size)) and (
+                                            (y + old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - - + -
+                                    elif ((x - old_size) < coord[0] < (x - old_size)) and (
+                                            (y - old_size) < coord[1] < (y + old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - - - +
+                                    elif ((x - old_size) < coord[0] < (x - old_size)) and (
+                                            (y - old_size) < coord[1] < (y - old_size)):
+                                        pillaged.append([coord[1], coord[0], city])  # - - - -
+                                with open(store_path, 'w', newline='') as f:
+                                    writer = csv.writer(f)
+                                    for city in pillaged:
+                                        consequences.append(pirate.pillage(selection, city))
+                                        writer.writerow({'Lat': str(city[0]), 'Lon': str(city[1]), 'Title': str(city[2])})
+                                fig = px.scatter_geo()
+                                fig.show()
+                            return consequences
+                        place_pirate(selected, pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
             else:
                 curs = cursor
         x, y = pygame.mouse.get_pos()
@@ -110,6 +145,16 @@ def main():
             display_cursor(screen, x, y)
         pygame.display.update()
 
+def draw_consequences(surface, consequences):
+    killed, damages, plundered = 0, 0, 0
+    for city in consequences:
+        damages += float(city[0])
+        killed += int(city[1])
+        plundered += int(city[2])
+
+    s_killed = str(killed)
+    s_damages = f'${damages}'
+    s_plundered = f'${plundered}'
 
 def draw_boxes(surface):
     sam = pygame.image.load("static/images/black_sam_text.gif")
