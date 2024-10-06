@@ -153,11 +153,11 @@ def main():
                     # morgan
                     selected = 4
                     name = "Henry Morgan"
-                elif 880 <= pygame.mouse.get_pos()[0] <= 980 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                elif 1120 <= pygame.mouse.get_pos()[0] <= 1220 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # every
                     selected = 1
                     name = "Henry Every"
-                elif 1120 <= pygame.mouse.get_pos()[0] <= 1220 and 760 <= pygame.mouse.get_pos()[1] <= 810:
+                elif 1240 <= pygame.mouse.get_pos()[0] <= 1360 and 760 <= pygame.mouse.get_pos()[1] <= 810:
                     # kidd
                     selected = 2
                     name = "William Kidd"
